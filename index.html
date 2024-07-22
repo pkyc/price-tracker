@@ -4,10 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Price Tracker</title>
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      margin: 0 auto;
+    }
+    form input, form button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
   <h1>Price Tracker</h1>
-  <div id="app"></div>
+  <div id="app">
+    <form id="itemForm">
+      <input type="text" id="name" name="name" placeholder="Item Name" required />
+      <input type="number" id="price" name="price" placeholder="Price" required />
+      <input type="number" id="quantity" name="quantity" placeholder="Quantity" required />
+      <input type="number" id="unit_price" name="unit_price" placeholder="Unit Price" required />
+      <input type="text" id="merchandizer" name="merchandizer" placeholder="Merchandizer" required />
+      <button type="submit">Add Item</button>
+    </form>
+    <p id="message"></p>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
