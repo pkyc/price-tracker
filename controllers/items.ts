@@ -14,6 +14,7 @@ try {
   console.log("Database connection successful");
 } catch (err) {
   console.error("Error connecting to the database:", err);
+  response.body = { message: "db error", error: err.message };
 };
 
 export const getItems = async ({ response }: { response: any }) => {
@@ -23,7 +24,7 @@ export const getItems = async ({ response }: { response: any }) => {
   } catch (err) {
     console.error("Error fetching items:", err);
     response.status = 500;
-    response.body = { message: "Error fetching items" };
+    response.body = { message: "fetch error", error: err.message };
   }
 };
 
@@ -42,7 +43,7 @@ export const addItem = async ({ request, response }: { request: any; response: a
   } catch (err) {
     console.error("Error adding item:", err);  // Log any errors
     response.status = 500;
-    response.body = { message: "Error adding item" };
+    response.body = { message: "additem error", error: err.message };
   }
 };
 
@@ -59,6 +60,6 @@ export const updateItem = async ({ params, request, response }: { params: { id: 
   } catch (err) {
     console.error("Error updating item:", err);  // Log any errors
     response.status = 500;
-    response.body = { message: "Error updating item" };
+    response.body = { message: "update error", error: err.message };
   }
 };
