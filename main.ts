@@ -1,5 +1,5 @@
 import { Application, Router, send } from "./deps.ts";
-import router from "./routes.ts";
+import router from "./routes/routes.ts";
 
 const app = new Application();
 
