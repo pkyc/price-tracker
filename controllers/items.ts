@@ -16,15 +16,23 @@ export const getItems = async ({ response }: { response: any }) => {
 };
 
 export const addItem = async ({ request, response }: { request: any; response: any }) => {
-  const body = await request.body();
-  const item = await body.value;
-  await client.query(
-    "INSERT INTO items (name, price, quantity, unit_price, merchandizer, date) VALUES ($1, $2, $3, $4, $5, $6)",
-    item.name, item.price, item.quantity, item.unit_price, item.merchandizer, new Date(),
-  );
-  response.status = 201;
-  response.body = { message: "Item added" };
+  try {
+    const body = await request.body().value;
+    const { name, price, quantity, unit_price, merchandizer } = body;
+    console.log("Received data:", body);  // Log the received data
+    await client.queryObject(
+      "INSERT INTO items (name, price, quantity, unit_price, merchandizer, date) VALUES ($1, $2, $3, $4, $5, $6)",
+      name, price, quantity, unit_price, merchandizer, new Date(),
+    );
+    response.status = 201;
+    response.body = { message: "Item added" };
+  } catch (err) {
+    console.error("Error adding item:", err);  // Log any errors
+    response.status = 500;
+    response.body = { message: "Error adding item" };
+  }
 };
+
 
 export const updateItem = async ({ params, request, response }: { params: { id: string }; request: any; response: any }) => {
   const body = await request.body();
