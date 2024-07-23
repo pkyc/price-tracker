@@ -1,15 +1,13 @@
 // controllers/items.ts
 import { Client } from "../deps.ts";
 const client = new Client({
-  user: "price_owner",
-  database: "price",
-  hostname: "ep-blue-sky-a59p5ldd.us-east-2.aws.neon.tech",
-  password: "J0tIYybHzg5Q",
+  user: "pricetrack_owner",
+  database: "pricetrack",
+  hostname: "ep-rough-grass-a5p716hl.us-east-2.aws.neon.tech",
+  password: "Rd1xtVBE0kQU",
   port: 5432,
- //sslmode: "require",
   });
 
-client.connect();
 
 try {
   await client.connect();
