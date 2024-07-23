@@ -52,7 +52,7 @@ export const addItem = async ({ request, response }: { request: any; response: a
     response.status = 201;
     response.body = { message: "Item added" };
   } catch (err) {
-    console.error("Error adding item:", err);  // Log any errors
+    console.error("C Error adding item:", err.message);  // Log any errors
     response.status = 500;
     response.body = { message: "additem error", error: err.message };
   }
