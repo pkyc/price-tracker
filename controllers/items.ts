@@ -6,7 +6,8 @@ const client = new Client({
   hostname: "ep-blue-sky-a59p5ldd.us-east-2.aws.neon.tech",
   password: "J0tIYybHzg5Q",
   port: 5432,
-});
+ //sslmode: "require",
+  });
 
 client.connect();
 
@@ -15,7 +16,7 @@ try {
   console.log("Database connection successful");
 } catch (err) {
   console.error("Error connecting to the database:", err);
-}
+};
 
 export const getItems = async ({ response }: { response: any }) => {
   try {
