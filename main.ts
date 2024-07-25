@@ -33,6 +33,26 @@ app.use(async (ctx, next) => {
   }
 });
 
+// Serve static index.html
+router.get("/", async (context: Context) => {
+    await send(context, context.request.url.pathname, {
+        root: `${Deno.cwd()}`,
+        index: "index.html",
+    });
+});
+
+// Endpoint for debug messages
+router.get("/debug", async (context: Context) => {
+    try {
+        const dbStatus = await testDbConnection();
+        context.response.body = dbStatus;
+    } catch (err) {
+        context.response.body = `Error: ${err.message}`;
+        context.response.status = 500;
+    }
+});
+
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 

@@ -32,5 +32,21 @@
     <p id="message"></p>
   </div>
   <script src="app.js"></script>
+  <script>
+    async function fetchDebugMessages() {
+        try {
+            const response = await fetch('/debug');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const text = await response.text();
+            document.getElementById('debug-messages').textContent = text;
+        } catch (error) {
+            document.getElementById('debug-messages').textContent = `Error: ${error.message}`;
+        }
+    }
+
+    fetchDebugMessages();
+</script>
 </body>
 </html>
