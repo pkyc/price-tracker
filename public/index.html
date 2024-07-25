@@ -1,52 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Price Tracker</title>
-  <style>
-    form {
-      display: flex;
-      flex-direction: column;
-      width: 300px;
-      margin: 0 auto;
-    }
-    form input, form button {
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 16px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Tracker</title>
 </head>
 <body>
-  <h1>Price Tracker</h1>
-  <div id="app">
-    <form id="itemForm">
-      <input type="text" id="name" name="name" placeholder="Item Name" required />
-      <input type="number" id="price" name="price" placeholder="Price" required />
-      <input type="number" id="quantity" name="quantity" placeholder="Quantity" required />
-      <input type="number" id="unit_price" name="unit_price" placeholder="Unit Price" required />
-      <input type="text" id="merchandizer" name="merchandizer" placeholder="Merchandizer" required />
-      <button type="submit">Add Item</button>
+    <h1>Price Tracker</h1>
+    <form id="add-item-form">
+        <input type="text" id="name" placeholder="Item Name" required>
+        <input type="number" id="price" placeholder="Price" step="0.01" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <input type="text" id="unit_price" placeholder="Unit Price" required>
+        <input type="text" id="merchandizer" placeholder="Merchandizer" required>
+        <button type="submit">Add Item</button>
     </form>
-    <p id="message"></p>
-  </div>
-  <script src="app.js"></script>
-  <script>
-    async function fetchDebugMessages() {
-        try {
-            const response = await fetch('/debug');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const text = await response.text();
-            document.getElementById('debug-messages').textContent = text;
-        } catch (error) {
-            document.getElementById('debug-messages').textContent = `Error: ${error.message}`;
-        }
-    }
+    <div id="items-list"></div>
 
-    fetchDebugMessages();
-</script>
+    <script>
+        document.getElementById('add-item-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const item = {
+                name: document.getElementById('name').value,
+                price: parseFloat(document.getElementById('price').value),
+                quantity: parseInt(document.getElementById('quantity').value, 10),
+                unit_price: document.getElementById('unit_price').value,
+                merchandizer: document.getElementById('merchandizer').value,
+            };
+
+            try {
+                const response = await fetch('/items', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(item),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to add item');
+                }
+                alert('Item added successfully!');
+                loadItems();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to add item');
+            }
+        });
+
+        async function loadItems() {
+            try {
+                const response = await fetch('/items');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch items');
+                }
+                const items = await response.json();
+                const itemsList = document.getElementById('items-list');
+                itemsList.innerHTML = '';
+                items.forEach(item => {
+                    itemsList.innerHTML += `<div>
+                        <p><strong>${item.name}</strong></p>
+                        <p>Price: $${item.price.toFixed(2)}</p>
+                        <p>Quantity: ${item.quantity}</p>
+                        <p>Unit Price: ${item.unit_price}</p>
+                        <p>Merchandizer: ${item.merchandizer}</p>
+                    </div>`;
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        loadItems();
+    </script>
 </body>
 </html>
